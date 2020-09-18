@@ -1,12 +1,16 @@
 // Copyright (c) 2017 PlanGrid, Inc.
 
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import mammoth from 'mammoth';
 
 import 'styles/docx.scss';
 import Loading from '../loading';
 
 export default class extends Component {
+  state = {
+    loading: true
+  }
+  
   componentDidMount() {
     const jsonFile = new XMLHttpRequest();
     jsonFile.open('GET', this.props.filePath, true);
@@ -27,6 +31,9 @@ export default class extends Component {
         .catch((a) => {
           console.log('alexei: something went wrong', a);
         })
+        .then(() => {
+          this.setState({loading: false})
+        })
         .done();
       }
     };
@@ -34,8 +41,10 @@ export default class extends Component {
 
   render() {
     return (
-      <div id="docx">
-        <Loading />
-      </div>);
+      <Fragment>
+        {this.state.loading && (this.props.loader || <Loading />)}
+        <div id="docx">
+        </div>);
+      </Fragment>
   }
 }

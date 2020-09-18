@@ -1,6 +1,6 @@
 // Copyright (c) 2017 PlanGrid, Inc.
 
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import 'styles/video.scss';
 import Loading from '../loading';
@@ -19,7 +19,7 @@ class VideoViewer extends Component {
 
   renderLoading() {
     if (this.state.loading) {
-      return <Loading />;
+      return this.props.loader || <Loading />;
     }
     return null;
   }
@@ -27,20 +27,22 @@ class VideoViewer extends Component {
   render() {
     const visibility = this.state.loading ? 'hidden' : 'visible';
     return (
-      <div className="pg-driver-view">
-        <div className="video-container">
-          {this.renderLoading()}
-          <video
-            style={{ visibility }}
-            controls
-            type={`video/${this.props.fileType}`}
-            onCanPlay={e => this.onCanPlay(e)}
-            src={this.props.filePath}
-          >
-            Video playback is not supported by your browser.
-          </video>
+      <Fragment>
+        {this.renderLoading()}
+        <div className="pg-driver-view">
+          <div className="video-container">
+            <video
+              style={{ visibility }}
+              controls
+              type={`video/${this.props.fileType}`}
+              onCanPlay={e => this.onCanPlay(e)}
+              src={this.props.filePath}
+            >
+              Video playback is not supported by your browser.
+            </video>
+          </div>
         </div>
-      </div>
+      </Fragment>
     );
   }
 }

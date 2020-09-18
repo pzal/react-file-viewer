@@ -1,6 +1,6 @@
 // Copyright (c) 2017 PlanGrid, Inc.
 
-import React from 'react';
+import React, {Fragment} from 'react';
 import VisibilitySensor from 'react-visibility-sensor';
 import { PDFJS } from 'pdfjs-dist/build/pdf.combined';
 import 'pdfjs-dist/web/compatibility';
@@ -138,28 +138,30 @@ export default class PDFDriver extends React.Component {
 
   renderLoading() {
     if (this.state.pdf) return null;
-    return (<div className="pdf-loading">LOADING ({this.state.percent}%)</div>);
+    return ( this.props.loader || <div className="pdf-loading">LOADING ({this.state.percent}%)</div>);
   }
 
   render() {
     return (
-      <div className="pdf-viewer-container">
-        <div className="pdf-viewer" ref={node => this.container = node} >
-          <div className="pdf-controlls-container">
-            <div className="view-control" onClick={this.increaseZoom} >
-              <i className="zoom-in" />
+      <Fragment>
+        {this.renderLoading()}
+        <div className="pdf-viewer-container">
+          <div className="pdf-viewer" ref={node => this.container = node} >
+            <div className="pdf-controlls-container">
+              <div className="view-control" onClick={this.increaseZoom} >
+                <i className="zoom-in" />
+              </div>
+              <div className="view-control" onClick={this.resetZoom}>
+                <i className="zoom-reset" />
+              </div>
+              <div className="view-control" onClick={this.reduceZoom}>
+                <i className="zoom-out" />
+              </div>
             </div>
-            <div className="view-control" onClick={this.resetZoom}>
-              <i className="zoom-reset" />
-            </div>
-            <div className="view-control" onClick={this.reduceZoom}>
-              <i className="zoom-out" />
-            </div>
+            {this.renderPages()}
           </div>
-          {this.renderLoading()}
-          {this.renderPages()}
         </div>
-      </div>
+      </Fragment>
     );
   }
 }
