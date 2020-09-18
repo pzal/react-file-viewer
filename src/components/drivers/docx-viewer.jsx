@@ -44,7 +44,8 @@ export default class extends Component {
       <Fragment>
         {this.state.loading && (this.props.loader || <Loading />)}
         <div id="docx">
-        </div>);
+        </div>
       </Fragment>
+    );
   }
 }
